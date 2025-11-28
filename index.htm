@@ -4,524 +4,444 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>תרגול סולמות</title>
-    <!-- טעינת Tailwind CSS עבור עיצוב מודרני ואסתטיקה -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'primary': '#4f46e5',
-                        'secondary': '#f97316',
-                        'correct': '#10b981',
-                        'incorrect': '#ef4444',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                }
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
-    </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700&display=swap');
-        body {
-            font-family: 'Heebo', sans-serif;
-            background-color: #f3f4f6;
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 30px;
+            font-size: 2.5em;
         }
-        .answer-card {
-            transition: all 0.2s ease-in-out;
+
+        .scale-image-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .scale-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 15px;
+        }
+
+        .scale-type {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #764ba2;
+            margin-bottom: 30px;
+        }
+
+        .answers {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .answer-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 20px;
+            font-size: 1.2em;
             cursor: pointer;
-            user-select: none;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
-        .answer-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+        .answer-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
-        .correct-animation {
-            animation: pulse-correct 0.5s ease-out;
+
+        .answer-btn:active {
+            transform: translateY(0);
         }
-        .incorrect-animation {
-            animation: shake 0.4s ease-in-out;
+
+        .answer-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 5px;
         }
-        @keyframes pulse-correct {
-            0% { transform: scale(1); background-color: #f3f4f6; }
-            50% { transform: scale(1.03); background-color: #d1fae5; }
-            100% { transform: scale(1); background-color: #f3f4f6; }
+
+        .answer-english {
+            font-size: 1.1em;
+            font-weight: bold;
         }
+
+        .answer-hebrew {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .answer-label {
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        .timer {
+            text-align: center;
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .error-message {
+            background: #ff4757;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            animation: shake 0.5s ease;
+        }
+
         @keyframes shake {
-            0% { transform: translateX(0); }
-            20% { transform: translateX(-10px); }
-            40% { transform: translateX(10px); }
-            60% { transform: translateX(-10px); }
-            80% { transform: translateX(10px); }
-            100% { transform: translateX(0); }
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
         }
-        /* מעבר בין מסכים */
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
+
+        .leaderboard {
+            margin-top: 30px;
         }
+
+        .leaderboard-title {
+            text-align: center;
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .leaderboard-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeIn 0.5s ease;
+        }
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .new-record {
+            background: #ffd700;
+            color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            animation: pulse 1s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .restart-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress {
+            text-align: center;
+            font-size: 1.3em;
+            color: #764ba2;
+            margin-bottom: 20px;
+            font-weight: bold;
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
-
-    <!-- האפליקציה המרכזית -->
-    <div id="app-container" class="w-full max-w-lg bg-white shadow-2xl rounded-xl p-6 md:p-8">
-        <h1 class="text-4xl font-bold text-center text-primary mb-6">🎼 תרגול סולמות</h1>
-
-        <!-- תצוגת אימון (ברירת מחדל) -->
-        <div id="practice-view" class="fade-in">
-            <div id="question-header" class="text-center mb-6">
-                <!-- טיימר ומונה יופיעו כאן -->
-            </div>
-
-            <div id="key-signature" class="flex flex-col items-center justify-center mb-8 bg-gray-50 p-4 rounded-lg shadow-inner">
-                <img id="scale-image" src="" alt="חתימת המפתח" class="max-h-32 object-contain rounded-lg shadow-md mb-3 transition duration-300 transform hover:scale-105" onerror="this.onerror=null; this.src='https://placehold.co/300x120/E5E7EB/6B7280?text=תמונת+סולם';" />
-                <p id="question-text" class="text-2xl font-semibold text-gray-700"></p>
-                <div id="feedback-message" class="mt-2 text-xl font-bold transition duration-300"></div>
-            </div>
-
-            <div id="answers-container" class="grid grid-cols-1 gap-4">
-                <!-- כרטיסיות התשובות יוצגו כאן -->
-            </div>
-
-            <div id="status-footer" class="text-center mt-6 p-3 bg-primary/10 rounded-lg">
-                <p id="timer" class="text-2xl font-mono text-primary inline-block"></p>
-                <p id="score-counter" class="text-lg font-medium text-gray-600 mt-1"></p>
-            </div>
-        </div>
-
-        <!-- תצוגת שיאים (מוסתרת בהתחלה) -->
-        <div id="highscores-view" class="fade-in hidden">
-            <h2 class="text-3xl font-bold text-center text-secondary mb-6">🏆 שיאי מהירות</h2>
-            <ul id="highscores-list" class="space-y-3 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-                <!-- רשימת השיאים תופיע כאן -->
-            </ul>
-            <div id="new-record-message" class="text-center mt-4 text-2xl font-extrabold text-correct hidden">שיא חדש! מדהים!</div>
-            <button id="restart-button" class="mt-8 w-full py-3 bg-primary text-white font-bold rounded-lg shadow-lg hover:bg-primary/90 transition duration-300 transform hover:scale-[1.01]">חזור להתחלה</button>
-        </div>
+<body>
+    <div class="container" id="app">
+        <h1>🎵 תרגול סולמות 🎵</h1>
+        <div id="content"></div>
     </div>
 
-    <script type="module">
-        // ---------------------------------------------------------------------
-        // 1. הגדרות ונתוני בסיס
-        // ---------------------------------------------------------------------
-
-        // הגדרות גלובליות ל-Firebase (מוסתרות אך נדרשות על ידי הסביבה)
-        // לצורך עמידה בדרישת ה-Local Storage, לא נשתמש ב-Firestore בפועל.
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'scale-quiz-app';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-        // הגדרת מערך הסולמות המלא (15 סולמות, כולל שארפ וכפול במול)
-        const SCALES = [
-            // Major Scales (Sharp keys)
-            { root_en: 'C', root_he: 'דו', sharps: 0, flats: 0, major_he: 'דו מז\'ור', major_en: 'C Major', minor_he: 'לה מינור', minor_en: 'A Minor', img: 'Key_Signature_C_major.jpg' },
-            { root_en: 'G', root_he: 'סול', sharps: 1, major_he: 'סול מז\'ור', major_en: 'G Major', minor_he: 'מי מינור', minor_en: 'E Minor', img: 'Key_Signature_G_major.jpg' },
-            { root_en: 'D', root_he: 'רה', sharps: 2, major_he: 'רה מז\'ור', major_en: 'D Major', minor_he: 'סי מינור', minor_en: 'B Minor', img: 'Key_Signature_D_major.jpg' },
-            { root_en: 'A', root_he: 'לה', sharps: 3, major_he: 'לה מז\'ור', major_en: 'A Major', minor_he: 'פה# מינור', minor_en: 'F# Minor', img: 'Key_Signature_A_major.jpg' },
-            { root_en: 'E', root_he: 'מי', sharps: 4, major_he: 'מי מז\'ור', major_en: 'E Major', minor_he: 'דו# מינור', minor_en: 'C# Minor', img: 'Key_Signature_E_major.jpg' },
-            { root_en: 'B', root_he: 'סי', sharps: 5, major_he: 'סי מז\'ור', major_en: 'B Major', minor_he: 'סול# מינור', minor_en: 'G# Minor', img: 'Key_Signature_B_major.jpg' },
-            { root_en: 'F#', root_he: 'פה#', sharps: 6, major_he: 'פה# מז\'ור', major_en: 'F# Major', minor_he: 'רה# מינור', minor_en: 'D# Minor', img: 'Key_Signature_F_sharp_major.jpg' },
-            { root_en: 'C#', root_he: 'דו#', sharps: 7, major_he: 'דו# מז\'ור', major_en: 'C# Major', minor_he: 'לה# מינור', minor_en: 'A# Minor', img: 'Key_Signature_of_C_sharp_major.jpg' },
-            // Major Scales (Flat keys)
-            { root_en: 'F', root_he: 'פה', flats: 1, major_he: 'פה מז\'ור', major_en: 'F Major', minor_he: 'רה מינור', minor_en: 'D Minor', img: 'Key_Signature_F_major.jpg' },
-            { root_en: 'Bb', root_he: 'סיb', flats: 2, major_he: 'סי במול מז\'ור', major_en: 'Bb Major', minor_he: 'סול מינור', minor_en: 'G Minor', img: 'Key_Signature_B_flat_major.jpg' },
-            { root_en: 'Eb', root_he: 'מיb', flats: 3, major_he: 'מי במול מז\'ור', major_en: 'Eb Major', minor_he: 'דו מינור', minor_en: 'C Minor', img: 'Key_Signature_E_flat_major.jpg' },
-            { root_en: 'Ab', root_he: 'להb', flats: 4, major_he: 'לה במול מז\'ור', major_en: 'Ab Major', minor_he: 'פה מינור', minor_en: 'F Minor', img: 'Key_Signature_A_flat_major.jpg' },
-            { root_en: 'Db', root_he: 'רהb', flats: 5, major_he: 'רה במול מז\'ור', major_en: 'Db Major', minor_he: 'סיb מינור', minor_en: 'Bb Minor', img: 'Key_Signature_D_flat_major.jpg' },
-            { root_en: 'Gb', root_he: 'סולb', flats: 6, major_he: 'סול במול מז\'ור', major_en: 'Gb Major', minor_he: 'מיb מינור', minor_en: 'Eb Minor', img: 'Key_Signature_G_flat_major.jpg' },
-            { root_en: 'Cb', root_he: 'דוb', flats: 7, major_he: 'דו במול מז\'ור', major_en: 'Cb Major', minor_he: 'להb מינור', minor_en: 'Ab Minor', img: 'Key_Signature_C_flat_major.jpg' }
-        ];
-
-        // מפרידים את הסולמות המז'ור והמינור לרשימות נפרדות לבחירת תשובות
-        const MAJOR_SCALES = SCALES.map(s => ({ he: s.major_he, en: s.major_en, key: s.major_en }));
-        const MINOR_SCALES = SCALES.map(s => ({ he: s.minor_he, en: s.minor_en, key: s.major_en })); // key: major_en משמש לחיבור לחתימת המפתח
-
-        // מצבי המשחק
-        let gameState = {
-            currentView: 'practice', // 'practice' or 'highscores'
-            currentQuestion: null,
-            correctAnswersCount: 0,
-            startTime: 0,
-            timerInterval: null
+    <script>
+        const scales = {
+            major: [
+                { name: 'C', hebrew: 'דו', image: 'Key_Signature_C_major.jpg' },
+                { name: 'C#', hebrew: 'דו דיאז', image: 'Key_Signature_of_C_sharp_major.jpg' },
+                { name: 'Db', hebrew: 'רה במול', image: 'Key_Signature_D_flat_major.jpg' },
+                { name: 'D', hebrew: 'רה', image: 'Key_Signature_D_major.jpg' },
+                { name: 'Eb', hebrew: 'מי במול', image: 'Key_Signature_E_flat_major.jpg' },
+                { name: 'E', hebrew: 'מי', image: 'Key_Signature_E_major.jpg' },
+                { name: 'F', hebrew: 'פה', image: 'Key_Signature_F_major.jpg' },
+                { name: 'F#', hebrew: 'פה דיאז', image: 'Key_Signature_F_sharp_major.jpg' },
+                { name: 'Gb', hebrew: 'סול במול', image: 'Key_Signature_G_flat_major.jpg' },
+                { name: 'G', hebrew: 'סול', image: 'Key_Signature_G_major.jpg' },
+                { name: 'Ab', hebrew: 'לה במול', image: 'Key_Signature_A_flat_major.jpg' },
+                { name: 'A', hebrew: 'לה', image: 'Key_Signature_A_major.jpg' },
+                { name: 'Bb', hebrew: 'סי במול', image: 'Key_Signature_B_flat_major.jpg' },
+                { name: 'B', hebrew: 'סי', image: 'Key_Signature_B_major.jpg' },
+                { name: 'Cb', hebrew: 'דו במול', image: 'Key_Signature_C_flat_major.jpg' }
+            ],
+            minor: [
+                { name: 'A', hebrew: 'לה', relative: 'C' },
+                { name: 'A#', hebrew: 'לה דיאז', relative: 'C#' },
+                { name: 'Bb', hebrew: 'סי במול', relative: 'Db' },
+                { name: 'B', hebrew: 'סי', relative: 'D' },
+                { name: 'C', hebrew: 'דו', relative: 'Eb' },
+                { name: 'C#', hebrew: 'דו דיאז', relative: 'E' },
+                { name: 'D', hebrew: 'רה', relative: 'F' },
+                { name: 'D#', hebrew: 'רה דיאז', relative: 'F#' },
+                { name: 'Eb', hebrew: 'מי במול', relative: 'Gb' },
+                { name: 'E', hebrew: 'מי', relative: 'G' },
+                { name: 'F', hebrew: 'פה', relative: 'Ab' },
+                { name: 'F#', hebrew: 'פה דיאז', relative: 'A' },
+                { name: 'G', hebrew: 'סול', relative: 'Bb' },
+                { name: 'G#', hebrew: 'סול דיאז', relative: 'B' },
+                { name: 'Ab', hebrew: 'לה במול', relative: 'Cb' }
+            ]
         };
 
-        const QUIZ_LENGTH = 10;
-        const HIGH_SCORES_KEY = 'scale_quiz_high_scores';
+        let currentQuestion = 0;
+        let correctAnswers = 0;
+        let startTime = null;
+        let timerInterval = null;
+        let questions = [];
 
-        // ---------------------------------------------------------------------
-        // 2. פונקציות עזר ללוגיקה
-        // ---------------------------------------------------------------------
+        function getRandomScale() {
+            const type = Math.random() < 0.5 ? 'major' : 'minor';
+            const scaleList = scales[type];
+            const scale = scaleList[Math.floor(Math.random() * scaleList.length)];
+            return { ...scale, type };
+        }
 
-        /**
-         * טוען את השיאים השמורים מ-Local Storage.
-         * @returns {Array} רשימת השיאים ממוינת.
-         */
-        function loadHighScores() {
-            try {
-                const scores = localStorage.getItem(HIGH_SCORES_KEY);
-                return scores ? JSON.parse(scores).sort((a, b) => a.time - b.time) : [];
-            } catch (error) {
-                console.error("Error loading high scores from localStorage:", error);
-                return [];
+        function generateQuestions() {
+            questions = [];
+            for (let i = 0; i < 10; i++) {
+                const correct = getRandomScale();
+                const wrongAnswers = [];
+                const type = correct.type;
+                
+                while (wrongAnswers.length < 2) {
+                    const wrong = scales[type][Math.floor(Math.random() * scales[type].length)];
+                    if (wrong.name !== correct.name && !wrongAnswers.find(w => w.name === wrong.name)) {
+                        wrongAnswers.push(wrong);
+                    }
+                }
+
+                const answers = [correct, ...wrongAnswers].sort(() => Math.random() - 0.5);
+                questions.push({ correct, answers });
             }
         }
 
-        /**
-         * שומר שיא חדש ב-Local Storage.
-         * @param {number} time הזמן במילישניות.
-         * @returns {boolean} האם זהו שיא חדש (נכנס ל-5 המהירים).
-         */
-        function saveHighScore(time) {
-            const scores = loadHighScores();
-            const date = new Date().toLocaleDateString('he-IL');
-            const newScore = { time, date };
-            let isNewRecord = false;
-
-            // הכנסת השיא החדש
-            scores.push(newScore);
-            scores.sort((a, b) => a.time - b.time);
-
-            // שמירת 5 השיאים המהירים ביותר
-            const top5 = scores.slice(0, 5);
-
-            // בדיקה אם השיא הנוכחי נכנס ל-5 המובילים
-            if (top5.some(s => s === newScore)) {
-                isNewRecord = true;
+        function getImagePath(scale) {
+            if (scale.type === 'minor') {
+                const relativeMajor = scales.major.find(m => m.name === scale.relative);
+                return `pic/${relativeMajor.image}`;
             }
-
-            try {
-                localStorage.setItem(HIGH_SCORES_KEY, JSON.stringify(top5));
-            } catch (error) {
-                console.error("Error saving high score to localStorage:", error);
-            }
-
-            return isNewRecord;
+            return `pic/${scale.image}`;
         }
 
-        /**
-         * ממיר מילישניות לפורמט ss:ms.
-         * @param {number} ms מילישניות.
-         * @returns {string} הפורמט ss:ms.
-         */
-        function formatTime(ms) {
-            const seconds = Math.floor(ms / 1000);
-            const milliseconds = Math.floor((ms % 1000) / 10).toString().padStart(2, '0');
-            const minutes = Math.floor(seconds / 60);
-            const displaySeconds = (seconds % 60).toString().padStart(2, '0');
-            // נשארים בפורמט ss:ms כנדרש (דקות זה אופציונלי אם התרגול ארוך מדי)
-            return `${displaySeconds}:${milliseconds}`;
-        }
-
-        /**
-         * מתחיל את טיימר המבחן.
-         */
         function startTimer() {
-            if (gameState.timerInterval) clearInterval(gameState.timerInterval);
-            gameState.startTime = Date.now();
-            const timerElement = document.getElementById('timer');
-
-            gameState.timerInterval = setInterval(() => {
-                const elapsed = Date.now() - gameState.startTime;
-                timerElement.textContent = formatTime(elapsed);
-            }, 10);
+            startTime = Date.now();
+            timerInterval = setInterval(updateTimer, 10);
         }
 
-        /**
-         * עוצר את טיימר המבחן ומחזיר את הזמן הכולל.
-         * @returns {number} הזמן הכולל במילישניות.
-         */
+        function updateTimer() {
+            const elapsed = Date.now() - startTime;
+            const seconds = Math.floor(elapsed / 1000);
+            const milliseconds = Math.floor((elapsed % 1000) / 10);
+            document.getElementById('timer').textContent = 
+                `${seconds.toString().padStart(2, '0')}:${milliseconds.toString().padStart(2, '0')}`;
+        }
+
         function stopTimer() {
-            if (gameState.timerInterval) {
-                clearInterval(gameState.timerInterval);
+            clearInterval(timerInterval);
+            return Date.now() - startTime;
+        }
+
+        function showQuestion() {
+            if (currentQuestion === 0) {
+                startTimer();
             }
-            return Date.now() - gameState.startTime;
+
+            const question = questions[currentQuestion];
+            const content = document.getElementById('content');
+            
+            const scaleType = question.correct.type === 'major' ? 'מז\'ור' : 'מינור';
+            const labels = ['A', 'B', 'C'];
+
+            content.innerHTML = `
+                <div class="progress">שאלה ${currentQuestion + 1} מתוך 10</div>
+                <div class="timer" id="timer">00:00</div>
+                <div class="scale-image-container">
+                    <img src="${getImagePath(question.correct)}" alt="Scale" class="scale-image">
+                    <div class="scale-type">${scaleType}</div>
+                </div>
+                <div class="answers">
+                    ${question.answers.map((answer, index) => `
+                        <button class="answer-btn" onclick="checkAnswer('${answer.name}', ${index})">
+                            <div class="answer-text">
+                                <div class="answer-english">${answer.name}</div>
+                                <div class="answer-hebrew">${answer.hebrew}</div>
+                            </div>
+                            <div class="answer-label">${labels[index]}</div>
+                        </button>
+                    `).join('')}
+                </div>
+            `;
         }
 
-        /**
-         * מערבב מערך (אלגוריתם Fisher-Yates).
-         * @param {Array} array המערך לערבוב.
-         */
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-        }
-
-        /**
-         * בוחר סולם אקראי ליצירת שאלה.
-         * @returns {Object} האובייקט של הסולם שנבחר.
-         */
-        function selectRandomScale() {
-            const index = Math.floor(Math.random() * SCALES.length);
-            return SCALES[index];
-        }
-
-        /**
-         * בונה שאלה חדשה (סולם ותשובות).
-         */
-        function generateNewQuestion() {
-            // 1. בחירת סולם וסוג (מז'ור/מינור)
-            const correctScale = selectRandomScale();
-            const isMajorQuestion = Math.random() < 0.5; // מז'ור או מינור באופן אקראי
-            const correctType = isMajorQuestion ? 'מז\'ור' : 'מינור';
-            const allPossibleAnswers = isMajorQuestion ? MAJOR_SCALES : MINOR_SCALES;
-
-            // 2. הגדרת התשובה הנכונה
-            const correctKey = correctScale.major_en;
-            const correctAnswer = isMajorQuestion ?
-                { he: correctScale.major_he, en: correctScale.major_en } :
-                { he: correctScale.minor_he, en: correctScale.minor_en };
-
-            // 3. בחירת 2 מסיחי דעת
-            let distractors = allPossibleAnswers.filter(ans => ans.he !== correctAnswer.he);
-            shuffle(distractors);
-            distractors = distractors.slice(0, 2);
-
-            // 4. יצירת מערך תשובות סופי
-            const answers = [correctAnswer, ...distractors];
-            shuffle(answers); // ערבוב מיקום התשובות
-
-            // 5. שמירת מצב השאלה
-            gameState.currentQuestion = {
-                correctKey: correctKey,
-                correctAnswer: correctAnswer.he,
-                correctType: correctType,
-                answers: answers,
-                imgFile: correctScale.img
-            };
-
-            renderQuestion();
-        }
-
-        // ---------------------------------------------------------------------
-        // 3. פונקציות רינדור UI
-        // ---------------------------------------------------------------------
-
-        /**
-         * מציג את השאלה הנוכחית על המסך.
-         */
-        function renderQuestion() {
-            const q = gameState.currentQuestion;
-            const imgElement = document.getElementById('scale-image');
-            const questionTextElement = document.getElementById('question-text');
-            const answersContainer = document.getElementById('answers-container');
-            const scoreCounter = document.getElementById('score-counter');
-            const feedbackMessage = document.getElementById('feedback-message');
-
-            // איפוס תצוגה
-            answersContainer.innerHTML = '';
-            feedbackMessage.textContent = '';
-            feedbackMessage.classList.remove('text-incorrect', 'text-correct');
-            imgElement.classList.remove('incorrect-animation'); // הסרת אנימציית טעות
-
-            // עדכון חתימת המפתח
-            imgElement.src = `pic/${q.imgFile}`;
-            questionTextElement.textContent = `מהו הסולם הזה ב${q.correctType}?`;
-            scoreCounter.textContent = `תשובות נכונות: ${gameState.correctAnswersCount}/${QUIZ_LENGTH}`;
-
-            // רינדור התשובות
-            q.answers.forEach((ans, index) => {
-                const id = index + 1;
-                const letter = ['א', 'ב', 'ג'][index];
-                const note = ['דו', 'רה', 'מי'][index];
-
-                const answerElement = document.createElement('div');
-                answerElement.id = `answer-${id}`;
-                answerElement.classList.add(
-                    'answer-card', 'p-4', 'border', 'rounded-lg', 'shadow-md', 'text-center',
-                    'bg-white', 'hover:bg-gray-100', 'flex', 'flex-col', 'items-center', 'justify-center'
-                );
-                answerElement.setAttribute('data-answer', ans.he);
-                answerElement.setAttribute('tabindex', index + 1); // לנגישות ומקלדת
-                answerElement.onclick = () => checkAnswer(ans.he, answerElement);
-
-                // הטקסט העברי למטה, הלועזי למעלה, ממוספר ב-ABC/דו-רה-מי
-                answerElement.innerHTML = `
-                    <p class="text-sm font-light text-gray-500 mb-1">
-                        ${letter} (${id}) - ${note}
-                    </p>
-                    <p class="text-3xl font-bold text-primary">${ans.en.replace(/#/g, '♯').replace(/b/g, '♭')}</p>
-                    <p class="text-xl font-semibold text-gray-700 mt-1">${ans.he.replace(/דיאז/g, '#').replace(/במול/g, 'b')}</p>
-                `;
-
-                answersContainer.appendChild(answerElement);
-            });
-        }
-
-        /**
-         * בודק את התשובה שנבחרה על ידי המשתמש.
-         * @param {string} selectedAnswer התשובה שנבחרה בעברית.
-         * @param {HTMLElement} element אלמנט התשובה שנלחץ.
-         */
-        function checkAnswer(selectedAnswer, element) {
-            const correctAnswer = gameState.currentQuestion.correctAnswer;
-            const feedbackMessage = document.getElementById('feedback-message');
-            const answersContainer = document.getElementById('answers-container');
-
-            // נטרול הקלקה נוספת
-            Array.from(answersContainer.children).forEach(child => child.onclick = null);
-
-            if (selectedAnswer === correctAnswer) {
-                // תשובה נכונה
-                gameState.correctAnswersCount++;
-                feedbackMessage.textContent = '✅ נכון!';
-                feedbackMessage.classList.add('text-correct');
-                element.classList.add('bg-correct', 'text-white', 'correct-animation');
-
-                document.getElementById('score-counter').textContent = `תשובות נכונות: ${gameState.correctAnswersCount}/${QUIZ_LENGTH}`;
-
-                setTimeout(() => {
-                    if (gameState.correctAnswersCount === QUIZ_LENGTH) {
-                        finishQuiz();
-                    } else {
-                        // מעבר לשאלה הבאה
-                        renderNextQuestion();
-                    }
-                }, 700);
-
+        function checkAnswer(answer, index) {
+            const question = questions[currentQuestion];
+            
+            if (answer === question.correct.name) {
+                correctAnswers++;
+                currentQuestion++;
+                
+                if (currentQuestion < 10) {
+                    showQuestion();
+                } else {
+                    const time = stopTimer();
+                    showLeaderboard(time);
+                }
             } else {
-                // תשובה שגויה - איפוס
-                feedbackMessage.textContent = '❌ טעות, נסה שוב';
-                feedbackMessage.classList.add('text-incorrect');
-                element.classList.add('bg-incorrect', 'text-white');
-                document.getElementById('scale-image').classList.add('incorrect-animation');
-
+                const content = document.getElementById('content');
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.textContent = 'טעות, נסה שוב';
+                content.insertBefore(errorDiv, content.firstChild);
+                
                 setTimeout(() => {
-                    resetQuiz(); // איפוס המבחן כולו
+                    resetGame();
                 }, 700);
             }
         }
 
-        /**
-         * עובר לשאלה הבאה.
-         */
-        function renderNextQuestion() {
-            // אנימציה קלה של הסרת השאלה הישנה
-            document.getElementById('practice-view').classList.add('opacity-0');
-            setTimeout(() => {
-                generateNewQuestion();
-                document.getElementById('practice-view').classList.remove('opacity-0');
-            }, 300);
+        function resetGame() {
+            currentQuestion = 0;
+            correctAnswers = 0;
+            stopTimer();
+            generateQuestions();
+            showQuestion();
         }
 
-        /**
-         * מציג את תצוגת השיאים.
-         */
-        function renderHighScoresView(totalTime, isNewRecord = false) {
-            stopTimer(); // לוודא שהטיימר הפסיק
-            const practiceView = document.getElementById('practice-view');
-            const highscoresView = document.getElementById('highscores-view');
-            const highscoresList = document.getElementById('highscores-list');
-            const newRecordMessage = document.getElementById('new-record-message');
-
-            // הסתרת אימון, הצגת שיאים
-            practiceView.classList.add('hidden');
-            highscoresView.classList.remove('hidden');
-
-            highscoresList.innerHTML = '';
-            newRecordMessage.classList.add('hidden');
-
-            const scores = loadHighScores();
-
-            if (scores.length === 0) {
-                highscoresList.innerHTML = '<li class="text-center text-gray-500">עדיין אין שיאים שמורים. התחל באימון!</li>';
-            } else {
-                scores.forEach((score, index) => {
-                    const li = document.createElement('li');
-                    li.classList.add('flex', 'justify-between', 'items-center', 'p-3', 'rounded-lg', 'bg-white', 'shadow-sm', 'font-mono');
-
-                    li.innerHTML = `
-                        <span class="text-lg font-bold text-secondary">${index + 1}.</span>
-                        <span class="text-2xl font-extrabold text-primary">${formatTime(score.time)}</span>
-                        <span class="text-sm text-gray-600">${score.date}</span>
-                    `;
-                    highscoresList.appendChild(li);
-                });
-            }
-
-            if (isNewRecord) {
-                newRecordMessage.classList.remove('hidden');
-            }
+        function saveScore(time) {
+            const scores = JSON.parse(localStorage.getItem('scaleScores') || '[]');
+            const date = new Date().toLocaleDateString('he-IL');
+            scores.push({ time, date });
+            scores.sort((a, b) => a.time - b.time);
+            const topScores = scores.slice(0, 5);
+            localStorage.setItem('scaleScores', JSON.stringify(topScores));
+            return scores.length <= 5 || time <= scores[4].time;
         }
 
-        // ---------------------------------------------------------------------
-        // 4. בקרת משחק ראשית
-        // ---------------------------------------------------------------------
+        function showLeaderboard(time) {
+            const isNewRecord = saveScore(time);
+            const scores = JSON.parse(localStorage.getItem('scaleScores') || '[]');
+            const content = document.getElementById('content');
+            
+            const seconds = Math.floor(time / 1000);
+            const milliseconds = Math.floor((time % 1000) / 10);
+            const timeStr = `${seconds.toString().padStart(2, '0')}:${milliseconds.toString().padStart(2, '0')}`;
 
-        /**
-         * מפעיל מחדש את המבחן.
-         */
-        function resetQuiz() {
-            gameState.correctAnswersCount = 0;
-            document.getElementById('timer').textContent = '00:00';
-            document.getElementById('feedback-message').textContent = '';
-            document.getElementById('feedback-message').classList.remove('text-incorrect', 'text-correct');
-
-            startTimer();
-            generateNewQuestion();
-
-            // מעבר חזרה לתצוגת אימון אם היינו בשיאים
-            document.getElementById('highscores-view').classList.add('hidden');
-            document.getElementById('practice-view').classList.remove('hidden');
+            content.innerHTML = `
+                ${isNewRecord ? '<div class="new-record">🎉 שיא חדש! 🎉</div>' : ''}
+                <div class="leaderboard-title">⏱️ טבלת שיאים ⏱️</div>
+                <div class="leaderboard-item" style="background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); color: #333;">
+                    <div style="font-weight: bold;">הזמן שלך: ${timeStr}</div>
+                </div>
+                <div class="leaderboard">
+                    ${scores.map((score, index) => {
+                        const s = Math.floor(score.time / 1000);
+                        const ms = Math.floor((score.time % 1000) / 10);
+                        const t = `${s.toString().padStart(2, '0')}:${ms.toString().padStart(2, '0')}`;
+                        return `
+                            <div class="leaderboard-item">
+                                <div>${index + 1}. ${t}</div>
+                                <div>${score.date}</div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+                <button class="restart-btn" onclick="resetGame()">🔄 חזור להתחלה</button>
+            `;
         }
 
-        /**
-         * מסיים את המבחן לאחר 10 תשובות נכונות.
-         */
-        function finishQuiz() {
-            const totalTime = stopTimer();
-            const isNewRecord = saveHighScore(totalTime);
-            renderHighScoresView(totalTime, isNewRecord);
-        }
-
-        // ---------------------------------------------------------------------
-        // 5. אתחול והאזנה לאירועים
-        // ---------------------------------------------------------------------
-
-        document.addEventListener('DOMContentLoaded', () => {
-            // האזנה ללחיצות מקלדת (1, 2, 3)
-            document.addEventListener('keydown', (e) => {
-                if (gameState.currentView === 'practice' && gameState.currentQuestion) {
-                    const key = e.key;
-                    if (key === '1' || key === '2' || key === '3') {
-                        const index = parseInt(key) - 1;
-                        const answerElement = document.getElementById(`answer-${key}`);
-                        if (answerElement && answerElement.onclick) {
-                            // הפעלת לוגיקת הבדיקה באמצעות קריאה ל-onclick
-                            const selectedAnswer = gameState.currentQuestion.answers[index].he;
-                            checkAnswer(selectedAnswer, answerElement);
-                        }
-                    }
+        document.addEventListener('keydown', (e) => {
+            if (currentQuestion < 10 && (e.key === '1' || e.key === '2' || e.key === '3')) {
+                const index = parseInt(e.key) - 1;
+                const question = questions[currentQuestion];
+                if (question && question.answers[index]) {
+                    checkAnswer(question.answers[index].name, index);
                 }
-            });
-
-            // האזנה לכפתור "חזור להתחלה"
-            document.getElementById('restart-button').addEventListener('click', () => {
-                resetQuiz();
-            });
-
-            // התחלת האפליקציה במצב אימון
-            resetQuiz();
+            }
         });
 
-        // עדכון מצב התצוגה בעת שינוי
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                if (mutation.attributeName === 'class') {
-                    const practiceHidden = document.getElementById('practice-view').classList.contains('hidden');
-                    gameState.currentView = practiceHidden ? 'highscores' : 'practice';
-                }
-            });
-        });
-        observer.observe(document.getElementById('practice-view'), { attributes: true });
-
+        // Initialize
+        generateQuestions();
+        showQuestion();
     </script>
 </body>
 </html>
